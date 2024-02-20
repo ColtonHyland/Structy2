@@ -19,3 +19,7 @@ const maxValue = (nums) => {
 module.exports = {
     maxValue,
 };
+
+// n = length of array
+// Time: O(n)
+// Space: O(1)
