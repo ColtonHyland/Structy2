@@ -11,7 +11,7 @@
 
 const uncompress = (s) => {
     const numbers = '0123456789';
-    let result = '';
+    let result = [];
     let i = 0;
     let j = 0;
     while (j < s.length) {
@@ -20,14 +20,14 @@ const uncompress = (s) => {
         } else {
             const num = Number(s.slice(i, j));
             for (let count = 0; count < num; count++) {
-                result += s[j];
+                result.push(s[j]);
             }
             j++;
             i = j;
         }
     }
 
-    return result;
+    return result.join('');
 };
 
 module.exports = {
