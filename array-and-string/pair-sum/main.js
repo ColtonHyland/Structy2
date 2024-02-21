@@ -13,7 +13,7 @@ const pairSum = (numbers, targetSum) => {
         const num = numbers[i];
         const diff = targetSum - num;
         if (diff in prev) {
-            return [i, prev[diff]];
+            return [prev[diff], 1];
         }
         prev[num] = i;
     }
