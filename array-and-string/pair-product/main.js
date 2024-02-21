@@ -8,13 +8,24 @@
 // There is guaranteed to be one such pair whose product is the target.
 
 const pairProduct = (numbers, targetProduct) => {
-    // todo
+    const prevNums = {};
+    for (let i = 0; i < numbers.length; i++) {
+        const num = numbers[i];
+        const quotient = targetProduct / num;
+        if (quotient in prevNums) {
+            return [prevNums[quotient], i];
+        }
+        prevNums[num] = i;
+    }
 };
 
 module.exports = {
     pairProduct,
 };
 
+// n = numbers length
+// Time: O(n)
+// Space: O(n)
 
 // pairProduct([3, 2, 5, 4, 1], 8); // -> [1, 3]
 // pairProduct([3, 2, 5, 4, 1], 10); // -> [1, 2]
