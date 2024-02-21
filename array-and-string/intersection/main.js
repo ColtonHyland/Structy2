@@ -5,13 +5,26 @@
 // You may assume that each input array does not contain duplicate elements.
 
 const intersection = (a, b) => {
-  // todo
+    const result = [];
+    const items = new Set();
+    for (let item of a) {
+        items.add(item);
+    }
+    for (let item of b) {
+        if (items.has(item)) {
+            result.push(item);
+        }
+    }
+    return result;
 };
 
 module.exports = {
-  intersection,
+    intersection,
 };
 
+// n = length of a, m = length of b
+// Time: O(n+m)
+// Space: O(n)
 
 
 // intersection([4,2,1,6], [3,6,9,2,10]) // -> [2,6]
