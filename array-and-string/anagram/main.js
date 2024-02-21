@@ -37,7 +37,7 @@ module.exports = {
 // let n = length of s1
 // let m = length of s2
 // Time: O(n + m)
-// Space: ~O(n + m)
+// Space: O(n)
 
 // anagrams('restful', 'fluster'); // -> true
 // anagrams('cats', 'tocs'); // -> false
