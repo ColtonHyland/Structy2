@@ -14,13 +14,40 @@
 // }
 
 const linkedListValues = (head) => {
-  // todo
+    const values = [];
+
+    while (head !== null) {
+        values.push(head.val);
+        head = head.next;
+    }
+    return values;
 };
+
+// n = number of nodes
+// Time: O(n)
+// Space: O(n)
+
+// RECURSIVE
+// const linkedListValues = (head) => {
+//     let values = [];
+//     let current = head;
+//     fillValues(head, values);
+//     return values;
+// };
+
+// const fillValues = (head, values) => {
+//     if (head === null) return;
+//     values.push(head.val);
+//     fillValues(head.next, values);
+// };
 
 module.exports = {
   linkedListValues,
 };
 
+// n = number of nodes
+// Time: O(n)
+// Space: O(n)
 
 // const a = new Node("a");
 // const b = new Node("b");
