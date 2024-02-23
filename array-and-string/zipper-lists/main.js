@@ -1,8 +1,8 @@
 // zipper lists
 // Write a function, zipperLists, that takes in the head of two linked lists as arguments.
 // The function should zipper the two lists together into single linked list by alternating
-// nodes. If one of the linked lists is longer than the other, the resulting list should 
-// terminate with the remaining nodes. The function should return the head of the zippered 
+// nodes. If one of the linked lists is longer than the other, the resulting list should
+// terminate with the remaining nodes. The function should return the head of the zippered
 // linked list.
 
 // Do this in-place, by mutating the original Nodes.
@@ -17,13 +17,36 @@
 // }
 
 const zipperLists = (head1, head2) => {
-  // todo
+    let current1 = head1.next;
+    let current2 = head2;
+    let tail = head1;
+    let count = 0;
+    while (current1 !== null && current2 !== null) {
+        if (count % 2 === 0) {
+            tail.next = current2;
+            current2 = current2.next;
+        } else {
+            tail.next = current1;
+            current1 = current1.next;
+        }
+        tail = tail.next;
+        count++;
+    }
+
+    if (current1 !== null) tail.next = current1;
+    if (current2 !== null) tail.next = current2;
+
+    return head1;
 };
+
+// n = length of head1
+// m = length of head2
+//Time: O(min(m,n))
+//Space: O(1)
 
 module.exports = {
-  zipperLists,
+    zipperLists,
 };
-
 
 // const a = new Node("a");
 // const b = new Node("b");
@@ -88,7 +111,7 @@ module.exports = {
 // const three = new Node(3);
 // one.next = two;
 // two.next = three;
-// // 1 -> 2 -> 3 
+// // 1 -> 2 -> 3
 
 // zipperLists(w, one);
 // // w -> 1 -> 2 -> 3
@@ -97,7 +120,7 @@ module.exports = {
 // const three = new Node(3);
 // one.next = two;
 // two.next = three;
-// // 1 -> 2 -> 3 
+// // 1 -> 2 -> 3
 
 // const w = new Node("w");
 // // w
