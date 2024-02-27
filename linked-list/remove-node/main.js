@@ -30,13 +30,23 @@ const removeNode = (head, targetVal) => {
         prev = current;
         current = current.next;
     }
-
     return head;
 };
 
 // n = list length
 // Time: O(n)
 // Space: O(1)
+
+// const removeNode = (head, targetVal) => {
+//     if (head === null) return null;
+//     if (head.val === targetVal) return head.next;
+//     head.next = removeNode(head.next, targetVal);
+//     return head;
+// };
+
+// n = list length
+// Time: O(n)
+// Space: O(n)
 
 module.exports = {
   removeNode,
