@@ -12,8 +12,21 @@
 // }
 
 const breadthFirstValues = (root) => {
-  // todo
+    if (root === null) return [];
+    const queue = [root];
+    const vals = [];
+    while (queue.length > 0) {
+        const current = queue.shift();
+        vals.push(current.val);
+        if (current.left !== null) queue.push(current.left);
+        if (current.right !== null) queue.push(current.right);
+    }
+    return vals;
 };
+
+// n = number of nodes
+// Time: O(n^2)
+// Space: O(n)
 
 module.exports = {
   breadthFirstValues,
