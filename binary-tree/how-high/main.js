@@ -1,5 +1,5 @@
 // how high
-// Write a function, howHigh, that takes in the root of a binary tree. 
+// Write a function, howHigh, that takes in the root of a binary tree.
 // The function should return a number representing the height of the tree.
 
 // The height of a binary tree is defined as the maximal number of edges from the root node to any leaf node.
@@ -15,13 +15,17 @@
 // }
 
 const howHigh = (node) => {
-  // todo
+    if (node === null) return -1;
+    return 1 + Math.max(howHigh(node.left), howHigh(node.right));
 };
+
+// n = number of nodes
+// Time: O(n)
+// Space: O(n)
 
 module.exports = {
-  howHigh,
+    howHigh,
 };
-
 
 // const a = new Node('a');
 // const b = new Node('b');
