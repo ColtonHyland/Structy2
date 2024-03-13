@@ -12,7 +12,32 @@
 // }
 
 const levelAverages = (root) => {
-  // todo
+    const levels = [];
+    levelAveragesHelper(root, levels, 0);
+    const averages = [];
+    for (let level of levels) {
+        averages.push(getAvg(level));
+    }
+    return averages;
+};
+
+const levelAveragesHelper = (root, levels, levelNum) => {
+    if (root === null) return;
+    if (levels.length === levelNum) {
+        levels.push([root.val]);
+    } else {
+        levels[levelNum].push(root.val);
+    }
+    levelAveragesHelper(root.left, levels, levelNum + 1);
+    levelAveragesHelper(root.right, levels, levelNum + 1);
+};
+
+const getAvg = (level) => {
+    let sum = 0;
+    for (let num of level) {
+        sum = sum + num;
+    }
+    return sum / level.length;
 };
 
 module.exports = {
