@@ -1,5 +1,5 @@
 // leaf list
-// Write a function, leafList, that takes in the root of a binary tree and 
+// Write a function, leafList, that takes in the root of a binary tree and
 // returns an array containing the values of all leaf nodes in left-to-right order.
 
 // class Node {
@@ -11,11 +11,41 @@
 // }
 
 const leafList = (root) => {
-  // todo
+    if (root === null) return [];
+    const stack = [root];
+    const leaves = [];
+    while (stack.length > 0) {
+        const current = stack.pop();
+        if (current.left === null && current.right === null) leaves.push(current.val);
+        if (current.right !== null) stack.push(current.right);
+        if (current.left !== null) stack.push(current.left);
+    }
+    return leaves;
 };
 
+// n = number of nodes
+// Time: O(n)
+// Space: O(n)
+
+// const leafList = (root) => {
+//     const leaves = [];
+//     fillLeaves(root, leaves);
+//     return leaves;
+// };
+
+// const fillLeaves = (root, leaves) => {
+//     if (root === null) return;
+//     if (root.left === null && root.right === null) return leaves.push(root.val);
+//     fillLeaves(root.left, leaves);
+//     fillLeaves(root.right, leaves);
+// };
+
+// n = number of nodes
+// Time: O(n)
+// Space: O(n)
+
 module.exports = {
-  leafList,
+    leafList,
 };
 
 // const a = new Node("a");
@@ -37,7 +67,7 @@ module.exports = {
 // //  / \     \
 // // d   e     f
 
-// leafList(a); // -> [ 'd', 'e', 'f' ] 
+// leafList(a); // -> [ 'd', 'e', 'f' ]
 // const a = new Node("a");
 // const b = new Node("b");
 // const c = new Node("c");
