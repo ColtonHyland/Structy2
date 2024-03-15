@@ -23,6 +23,11 @@ const traverseGraph = (graph, src, visited) => {
     return true;
 };
 
+// n = number of nodes
+// e = number edges
+// Time: O(e)
+// Space: O(n)
+
 module.exports = {
     connectedComponentsCount,
 };
