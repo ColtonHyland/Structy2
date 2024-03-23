@@ -40,3 +40,8 @@ const buildGraph = (numCourses, prereqs) => {
 module.exports = {
     prereqsPossible,
 };
+
+// p = # prereqs
+// n = # courses
+// Time: O(n + p)
+// Space: O(n)
