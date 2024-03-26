@@ -13,3 +13,8 @@ const maxPathSum = (grid, r = 0, c = 0, memo = {}) => {
 module.exports = {
     maxPathSum,
 };
+
+// r = # rows
+// c = # columns
+// Time: O(r*c)
+// Space: O(r*c)
