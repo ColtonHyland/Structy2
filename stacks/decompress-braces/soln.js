@@ -33,3 +33,8 @@ const repeat = (segment, num) => {
 module.exports = {
     decompressBraces,
 };
+
+// s = length of string
+// m = count of brace pairs
+// Time: O((9^m) * s)
+// Space: O((9^m) * s)
