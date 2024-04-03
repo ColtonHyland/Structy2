@@ -27,6 +27,10 @@ const getOptions = (s) => {
     }
 };
 
+module.exports = {
+    parentheticalPossibilities,
+};
+
 // n = length of the string,
 // m = length of largest parenthetical group
 // Time: ~O(m^n)
