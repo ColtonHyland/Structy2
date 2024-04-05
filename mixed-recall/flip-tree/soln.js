@@ -8,12 +8,10 @@
 
 const flipTree = (root) => {
     if (root === null) return null;
-    const temp = root.left;
-    root.left = root.right;
-    root.right = temp;
-
-    const leftPath = flipTree(root.left);
-    const rightPath = flipTree(root.right);
+    const left = flipTree(root.left);
+    const right = flipTree(root.right);
+    root.left = right
+    root.right = left;
 
     return root;
 };
