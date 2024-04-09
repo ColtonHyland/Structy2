@@ -1,0 +1,45 @@
+// token replace
+// Write a function, tokenReplace, that takes in an object of tokens and a
+// string. The function should return a new string where tokens are replaced.
+
+// Tokens are enclosed in a pair of '$'. You can assume that the input string is properly formatted and '$' is not used in the string except to enclose a token. Tokens should be replaced from left to right in the string (see test_05).
+
+// const tokens = {
+//   $LOCATION$: "park",
+//   $ANIMAL$: "dog",
+// };
+// tokenReplace("Walk the $ANIMAL$ in the $LOCATION$!", tokens);
+// // -> 'Walk the dog in the park!'
+// const tokens = {
+//   $ADJECTIVE$: "quick",
+//   $VERB$: "hopped",
+//   $DIRECTION$: "North",
+// };
+// tokenReplace("the $ADJECTIVE$ fox $VERB$ $ADJECTIVE$ly $DIRECTION$ward", tokens);
+// // -> 'the quick fox hopped quickly Northward'
+// const tokens = {
+//   $greeting$: "hey programmer",
+// };
+// tokenReplace("his greeting is always $greeting$.", tokens);
+// // -> 'his greeting is always hey programmer.'
+// const tokens = {
+//   $A$: "lions",
+//   $B$: "tigers",
+//   $C$: "bears",
+// };
+// tokenReplace("$A$$B$$C$, oh my.", tokens);
+// // -> 'lionstigersbears, oh my.'
+// const tokens = {
+//   $A$: "lions",
+//   $B$: "tigers",
+//   $C$: "bears",
+// };
+// tokenReplace("$B$", tokens);
+// // -> 'tigers'
+// const tokens = {
+//   $second$: "beta",
+//   $first$: "alpha",
+//   $third$: "gamma",
+// };
+// tokenReplace("$first$second$third$", tokens);
+// // -> 'alphasecondgamma'
