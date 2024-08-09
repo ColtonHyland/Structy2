@@ -1,8 +1,8 @@
 // add lists
-// Write a function, addLists, that takes in the head of two linked lists, each representing a 
-// number. The nodes of the linked lists contain digits as values. The nodes in the input lists 
-// are reversed; this means that the least significant digit of the number is the head. 
-// The function should return the head of a new linked listed representing the sum of the input lists. 
+// Write a function, addLists, that takes in the head of two linked lists, each representing a
+// number. The nodes of the linked lists contain digits as values. The nodes in the input lists
+// are reversed; this means that the least significant digit of the number is the head.
+// The function should return the head of a new linked listed representing the sum of the input lists.
 // The output list should have its digits reversed as well.
 
 // You must do this by traversing through the linked lists once.
@@ -26,11 +26,13 @@
 // //   975
 
 class Node {
-  constructor(val) {
-    this.val = val;
-    this.next = null;
-  }
+    constructor(val) {
+        this.val = val;
+        this.next = null;
+    }
 }
+
+// RECURSIVE
 
 const addLists = (head1, head2, carry = 0) => {
     if (head1 === null && head2 === null && carry === 0) return null;
@@ -50,6 +52,8 @@ const addLists = (head1, head2, carry = 0) => {
 // m = length of list 2
 // Time: O(max(n, m))
 // Space: O(max(n, m))
+
+// ITERATIVE
 
 // const addLists = (head1, head2) => {
 //     const dummyHead = new Node(null);
@@ -81,9 +85,8 @@ const addLists = (head1, head2, carry = 0) => {
 // Space: O(max(n, m))
 
 module.exports = {
-  addLists,
+    addLists,
 };
-
 
 // const a1 = new Node(1);
 // const a2 = new Node(2);
@@ -118,7 +121,7 @@ module.exports = {
 // const b1 = new Node(2);
 // const b2 = new Node(3);
 // b1.next = b2;
-// // 2 -> 3 
+// // 2 -> 3
 
 // addLists(a1, b1);
 // // 3 -> 7 -> 5 -> 7

@@ -6,12 +6,14 @@
 // Hey. This is our first linked list problem, so you should be liberal with watching
 //  the Approach and Walkthrough. Be productive! -AZ
 
-// class Node {
-//   constructor(val) {
-//     this.val = val;
-//     this.next = null;
-//   }
-// }
+class Node {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+// ITERATIVE
 
 const linkedListValues = (head) => {
     const values = [];
@@ -28,6 +30,7 @@ const linkedListValues = (head) => {
 // Space: O(n)
 
 // RECURSIVE
+
 // const linkedListValues = (head) => {
 //     let values = [];
 //     let current = head;
@@ -41,13 +44,13 @@ const linkedListValues = (head) => {
 //     fillValues(head.next, values);
 // };
 
-module.exports = {
-  linkedListValues,
-};
-
 // n = number of nodes
 // Time: O(n)
 // Space: O(n)
+
+module.exports = {
+  linkedListValues,
+};
 
 // const a = new Node("a");
 // const b = new Node("b");

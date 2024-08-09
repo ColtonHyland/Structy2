@@ -16,6 +16,8 @@ class Node {
   }
 }
 
+// ITERATIVE
+
 const insertNode = (head, value, index) => {
     const newNode = new Node(value);
     let current = head;
@@ -40,6 +42,8 @@ const insertNode = (head, value, index) => {
 // n = number of nodes
 // Time: O(n)
 // Space: O(1)
+
+// RECURSIVE
 
 // const insertNode = (head, value, index) => {
 

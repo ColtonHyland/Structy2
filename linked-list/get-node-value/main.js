@@ -4,12 +4,14 @@
 
 // If there is no node at the given index, then return null.
 
-// class Node {
-//   constructor(val) {
-//     this.val = val;
-//     this.next = null;
-//   }
-// }
+class Node {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+// ITERATIVE
 
 // const getNodeValue = (head, index) => {
 //     let current = head;
@@ -27,6 +29,7 @@
 // Space: O(1)
 
 //RECURSIVE
+
 const getNodeValue = (head, index) => {
     if (head === null) return null;
     if (index === 0) return head.val;
@@ -36,7 +39,6 @@ const getNodeValue = (head, index) => {
 // n = number of nodes
 // TIme: O(n)
 // Space: O(n)
-
 
 
 module.exports = {

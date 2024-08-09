@@ -14,6 +14,8 @@ class Node {
   }
 }
 
+// ITERATIVE
+
 const mergeLists = (head1, head2) => {
     let current1 = head1;
     let current2 = head2;
@@ -35,8 +37,10 @@ const mergeLists = (head1, head2) => {
 };
 
 // n = list 1 length, m = list 2 length
-// TIme: O(min(m,n))
-//Space: O(1);
+// Time: O(min(m,n))
+// Space: O(1)
+
+// RECURSIVE
 
 // const mergeLists = (head1, head2) => {
 //     if (head1 === null && head2 === null) return null;
@@ -54,8 +58,8 @@ const mergeLists = (head1, head2) => {
 // };
 
 // n = list 1 length, m = list 2 length
-// TIme: O(min(m,n))
-//Space: O(min(m,n));
+// Time: O(min(m,n))
+// Space: O(min(m,n))
 
 module.exports = {
   mergeLists,

@@ -9,12 +9,14 @@
 
 // You may assume that both input lists are non-empty.
 
-// class Node {
-//   constructor(val) {
-//     this.val = val;
-//     this.next = null;
-//   }
-// }
+class Node {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+// ITERATIVE
 
 const zipperLists = (head1, head2) => {
     let current1 = head1.next;
@@ -43,6 +45,8 @@ const zipperLists = (head1, head2) => {
 // m = length of head2
 //Time: O(min(m,n))
 //Space: O(1)
+
+// RECURSIVE
 
 // const zipperLists = (head1, head2) => {
 //     if (head1 === null && head2 === null) return null;

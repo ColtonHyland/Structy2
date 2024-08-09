@@ -18,6 +18,8 @@ class Node {
   }
 }
 
+// ITERATIVE
+
 const removeNode = (head, targetVal) => {
     if (head.val === targetVal) return head.next;
     let current = head;
@@ -36,6 +38,8 @@ const removeNode = (head, targetVal) => {
 // n = list length
 // Time: O(n)
 // Space: O(1)
+
+// RECURSIVE
 
 // const removeNode = (head, targetVal) => {
 //     if (head === null) return null;

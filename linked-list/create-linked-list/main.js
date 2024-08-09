@@ -10,6 +10,8 @@ class Node {
   }
 }
 
+// ITERATIVE
+
 const createLinkedList = (values) => {
     if (values.length === 0) return null;
     const dummyHead = new Node(null);
@@ -24,6 +26,8 @@ const createLinkedList = (values) => {
 // n is lnegth of values
 // Time: O(n)
 // Space: O(n)
+
+// RECURSIVE
 
 // const createLinkedList = (values, count = 0) => {
 //     if (values.length === count) return null;

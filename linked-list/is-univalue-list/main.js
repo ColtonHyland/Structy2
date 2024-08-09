@@ -5,12 +5,14 @@
 
 // You may assume that the input list is non-empty.
 
-// // class Node {
-// //   constructor(val) {
-// //     this.val = val;
-// //     this.next = null;
-// //   }
-// // }
+class Node {
+  constructor(val) {
+    this.val = val;
+    this.next = null;
+  }
+}
+
+// ITERATIVE
 
 const isUnivalueList = (head) => {
     let current = head;
@@ -26,6 +28,8 @@ const isUnivalueList = (head) => {
 // n = length of list
 // Time: O(n)
 // Space: O(1)
+
+// RECURSIVE
 
 // const isUnivalueList = (head) => {
 //     const next = head.next;
