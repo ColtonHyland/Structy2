@@ -2,96 +2,112 @@ import os
 import json
 import re
 
-# Function to extract and format the starter code from init.js
-def extract_starter_code(init_path):
-    with open(init_path, 'r') as file:
-        starter_code = file.read().strip()
-    return starter_code
-
-# Function to extract and format the solutions from soln.js
-def extract_solutions(soln_path):
-    with open(soln_path, 'r') as file:
+def extract_code(file_path):
+    """Extracts and cleans the code from the given file, removing comments."""
+    with open(file_path, 'r') as file:
         lines = file.readlines()
+    code = ''.join([line for line in lines if not line.strip().startswith('//')])
+    return code.strip()
 
+def extract_complexity(content):
+    """Extracts the time and space complexity from the content."""
+    time_complexity = re.search(r'Time:\s*(O\([^)]+\))', content)
+    space_complexity = re.search(r'Space:\s*(O\([^)]+\))', content)
+    
+    time_complexity = time_complexity.group(1) if time_complexity else "Unknown"
+    space_complexity = space_complexity.group(1) if space_complexity else "Unknown"
+    
+    return time_complexity, space_complexity
+
+def extract_solution(file_path):
+    """Extracts the solution from the solution file, handling both single and multiple solutions."""
+    with open(file_path, 'r') as file:
+        content = file.read()
+    
     solutions = []
-    solution_code = []
-    solution_type = None
-
-    for line in lines:
-        stripped_line = line.strip()
-        if stripped_line.startswith("//"):
-            if solution_code:
-                solutions.append({"type": solution_type if solution_type else "None", "code": "\n".join(solution_code)})
-                solution_code = []
-            solution_type = stripped_line.split()[1] if len(stripped_line.split()) > 1 else "None"
-        else:
-            solution_code.append(line)
-
-    if solution_code:
-        solutions.append({"type": solution_type if solution_type else "None", "code": "\n".join(solution_code)})
-
+    
+    # Regex to find iterative and recursive solutions
+    iterative_match = re.search(r'// ITERATIVE(.*?)(?:// RECURSIVE|module\.exports)', content, re.DOTALL)
+    recursive_match = re.search(r'// RECURSIVE(.*?)(module\.exports)', content, re.DOTALL)
+    
+    if iterative_match:
+        time_complexity, space_complexity = extract_complexity(iterative_match.group(1))
+        solutions.append({
+            "type": "iterative",
+            "code": iterative_match.group(1).strip(),
+            "complexity": {
+                "time": time_complexity,
+                "space": space_complexity
+            }
+        })
+    
+    if recursive_match:
+        time_complexity, space_complexity = extract_complexity(recursive_match.group(1))
+        solutions.append({
+            "type": "recursive",
+            "code": recursive_match.group(1).strip(),
+            "complexity": {
+                "time": time_complexity,
+                "space": space_complexity
+            }
+        })
+    
+    # If only one solution is present and not labeled
+    if not iterative_match and not recursive_match:
+        time_complexity, space_complexity = extract_complexity(content)
+        solutions.append({
+            "type": "single",
+            "code": content.strip(),
+            "complexity": {
+                "time": time_complexity,
+                "space": space_complexity
+            }
+        })
+    
     return solutions
 
-# Function to extract and format the test cases from test.js
-def extract_test_cases(test_path):
-    with open(test_path, 'r') as file:
-        lines = file.readlines()
+def extract_tests(file_path):
+    """Attempts to extract the test cases from the test.js file."""
+    # This can be adjusted or skipped depending on the consistency of test.js files
+    return []
 
-    test_cases = []
-    input_part = None
-    output_part = None
-
-    for line in lines:
-        stripped_line = line.strip()
-        
-        # Check for the input part (e.g., // hasCycle({...});)
-        if stripped_line.startswith("//") and ");" in stripped_line:
-            input_part = stripped_line.split("//")[1].strip()
-        
-        # Check for the output part (e.g., // -> true)
-        if stripped_line.startswith("// ->"):
-            output_part = stripped_line.split("->")[1].strip()
-        
-        # If both input and output are found, store them and reset
-        if input_part and output_part:
-            test_cases.append({"input": input_part, "output": output_part})
-            input_part = None
-            output_part = None
-
-    return test_cases
-
-# Function to combine everything into the desired JSON structure
-def create_json(problem_directory, problem_name):
-    init_path = os.path.join(problem_directory, 'init.js')
-    soln_path = os.path.join(problem_directory, 'soln.js')
-    test_path = os.path.join(problem_directory, 'test.js')
-
-    # Ensure all required files are present
-    if not (os.path.exists(init_path) and os.path.exists(soln_path) and os.path.exists(test_path)):
-        print(f"Skipping {problem_name}: Required files are missing.")
-        return None
-
-    starter_code = extract_starter_code(init_path)
-    solutions = extract_solutions(soln_path)
-    tests = extract_test_cases(test_path)
-
-    problem_json = {
-        "name": problem_name,
-        "description": f"{problem_name} problem description",
-        "starterCode": starter_code,
-        "solutions": solutions,
+def convert_to_json(init_path, soln_path, test_path, output_path, question_title):
+    """Converts the files to a JSON format and writes the result to output_path."""
+    # Extract the necessary information
+    starter_code = extract_code(init_path)
+    solutions = extract_solution(soln_path)
+    tests = extract_tests(test_path)
+    
+    # Define the JSON structure
+    json_data = {
+        "title": question_title,
+        "starter_code": starter_code,
+        "solution": solutions,
         "tests": tests
     }
-
-    output_path = os.path.join(problem_directory, f'{problem_name}.json')
+    
+    # Write the JSON to a file
     with open(output_path, 'w') as json_file:
-        json.dump(problem_json, json_file, indent=2)
+        json.dump(json_data, json_file, indent=4)
+    
+    print(f"Generated {output_path}")
 
-    return output_path
+def process_directory(base_directory):
+    """Processes the entire directory structure containing multiple sections and questions."""
+    for root, dirs, files in os.walk(base_directory):
+        print(f"Processing directory: {root}")
+        if 'init.js' in files and 'soln.js' in files and 'test.js' in files:
+            question_title = os.path.basename(root)
+            init_path = os.path.join(root, 'init.js')
+            soln_path = os.path.join(root, 'soln.js')
+            test_path = os.path.join(root, 'test.js')
+            output_file = os.path.join(root, 'output.json')
+            
+            # Convert to JSON
+            convert_to_json(init_path, soln_path, test_path, output_file, question_title)
+        else:
+            print(f"No valid files found in: {root}")
 
-# Example of how to run the script for a specific problem
-def process_problem(directory, problem_name):
-    return create_json(directory, problem_name)
-
-# Example usage:
-# process_problem('/path/to/problem/directory', 'problem_name')
+# Example usage
+base_directory = r'C:\Users\colto\Projects\Structy2\sections'  # Root directory of your sections
+process_directory(base_directory)
