@@ -3,10 +3,10 @@ import json
 import re
 
 def extract_code(file_path):
-    """Extracts and cleans the code from the given file, removing comments."""
+    """Extracts the code from the given file, preserving the //todo comment."""
     with open(file_path, 'r') as file:
         lines = file.readlines()
-    code = ''.join([line for line in lines if not line.strip().startswith('//')])
+    code = ''.join([line for line in lines if not line.strip().startswith('//') or '//todo' in line])
     return code.strip()
 
 def extract_complexity(content):
