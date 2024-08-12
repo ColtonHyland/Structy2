@@ -1,114 +1,108 @@
 import os
+import json
+import re
 
-def reformat_init(input_path, output_path):
-    with open(input_path, 'r') as file:
+def extract_code(file_path):
+    """Extracts and cleans the code from the given file, removing comments."""
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    code = ''.join([line for line in lines if not line.strip().startswith('//')])
+    return code.strip()
+
+def extract_complexity(content):
+    """Extracts the time and space complexity from the content."""
+    time_complexity = re.search(r'Time:\s*(O\([^)]+\))', content)
+    space_complexity = re.search(r'Space:\s*(O\([^)]+\))', content)
+    
+    time_complexity = time_complexity.group(1) if time_complexity else "Unknown"
+    space_complexity = space_complexity.group(1) if space_complexity else "Unknown"
+    
+    return time_complexity, space_complexity
+
+def extract_solution(file_path):
+    """Extracts the solution from the solution file, handling both single and multiple solutions."""
+    with open(file_path, 'r') as file:
         content = file.read()
-
-    with open(output_path, 'w') as file:
-        file.write(content)
-
-def reformat_soln(input_path, output_path):
-    with open(input_path, 'r') as file:
-        lines = file.readlines()
-
+    
     solutions = []
-    current_solution = []
-    solution_type = None
-    complexity = []
+    
+    # Regex to find iterative and recursive solutions
+    iterative_match = re.search(r'// ITERATIVE(.*?)(?:// RECURSIVE|module\.exports)', content, re.DOTALL)
+    recursive_match = re.search(r'// RECURSIVE(.*?)(module\.exports)', content, re.DOTALL)
+    
+    if iterative_match:
+        time_complexity, space_complexity = extract_complexity(iterative_match.group(1))
+        solutions.append({
+            "type": "iterative",
+            "code": iterative_match.group(1).strip(),
+            "complexity": {
+                "time": time_complexity,
+                "space": space_complexity
+            }
+        })
+    
+    if recursive_match:
+        time_complexity, space_complexity = extract_complexity(recursive_match.group(1))
+        solutions.append({
+            "type": "recursive",
+            "code": recursive_match.group(1).strip(),
+            "complexity": {
+                "time": time_complexity,
+                "space": space_complexity
+            }
+        })
+    
+    # If only one solution is present and not labeled
+    if not iterative_match and not recursive_match:
+        time_complexity, space_complexity = extract_complexity(content)
+        solutions.append({
+            "type": "single",
+            "code": content.strip(),
+            "complexity": {
+                "time": time_complexity,
+                "space": space_complexity
+            }
+        })
+    
+    return solutions
 
-    for line in lines:
-        if 'ITERATIVE' in line.upper():
-            if current_solution:
-                solutions.append((solution_type, current_solution, complexity))
-                current_solution = []
-                complexity = []
-            solution_type = 'ITERATIVE'
-        elif 'RECURSIVE' in line.upper():
-            if current_solution:
-                solutions.append((solution_type, current_solution, complexity))
-                current_solution = []
-                complexity = []
-            solution_type = 'RECURSIVE'
-        elif 'module.exports' in line:
-            continue
-        elif 'Time:' in line or 'Space:' in line:
-            complexity.append(line.strip())
-        else:
-            current_solution.append(line.strip())
+def extract_tests(file_path):
+    """Attempts to extract the test cases from the test.js file."""
+    # This can be adjusted or skipped depending on the consistency of test.js files
+    return []
 
-    if current_solution:
-        solutions.append((solution_type, current_solution, complexity))
+def convert_to_json(init_path, soln_path, test_path, output_path, question_title):
+    """Converts the files to a JSON format and writes the result to output_path."""
+    # Extract the necessary information
+    starter_code = extract_code(init_path)
+    solutions = extract_solution(soln_path)
+    tests = extract_tests(test_path)
+    
+    # Define the JSON structure
+    json_data = {
+        "title": question_title,
+        "starter_code": starter_code,
+        "solution": solutions,
+        "tests": tests
+    }
+    
+    # Write the JSON to a file
+    with open(output_path, 'w') as json_file:
+        json.dump(json_data, json_file, indent=4)
 
-    with open(output_path, 'w') as file:
-        for solution_type, solution_code, complexity in solutions:
-            file.write(f"// START SOLUTION: {solution_type}\n")
-            file.write("\n".join(solution_code))
-            file.write("\n" + "\n".join(complexity) + "\n")
-            file.write("// END SOLUTION\n\n")
-
-def reformat_test(input_path, output_path):
-    with open(input_path, 'r') as file:
-        lines = file.readlines()
-
-    test_cases = []
-    current_input = ""
-    current_output = ""
-
-    for line in lines:
-        stripped_line = line.strip()
-        if stripped_line.startswith("expect("):  # Look for the expected format for input
-            current_input = stripped_line.split("expect(")[1].split(").to")[0].strip()
-        elif "->" in stripped_line:  # Look for the expected format for output
-            output_part = stripped_line.split("->")[1].strip()
-            current_output = output_part
-            test_cases.append((current_input, current_output))
-            current_input = ""
-            current_output = ""
-        elif stripped_line.startswith("//"):
-            continue  # Skip comment lines
-
-    with open(output_path, 'w') as file:
-        for i, (test_input, test_output) in enumerate(test_cases):
-            file.write(f"// TEST CASE {i+1}\n")
-            file.write("// INPUT:\n")
-            file.write(test_input + "\n")
-            file.write("// OUTPUT:\n")
-            file.write(test_output + "\n")
-            file.write("\n")
-
-def reformat_files(problem_directory):
-    # Paths
-    init_path = os.path.join(problem_directory, 'init.js')
-    soln_path = os.path.join(problem_directory, 'soln.js')
-    test_path = os.path.join(problem_directory, 'test.js')
-
-    # Output paths
-    output_init = os.path.join(problem_directory, 'reformatted_init.js')
-    output_soln = os.path.join(problem_directory, 'reformatted_soln.js')
-    output_test = os.path.join(problem_directory, 'reformatted_test.js')
-
-    # Log the paths being processed
-    print(f"Processing directory: {problem_directory}")
-    print(f"Formatting {init_path}, {soln_path}, {test_path}")
-
-    # Check if the files exist
-    if os.path.exists(init_path) and os.path.exists(soln_path) and os.path.exists(test_path):
-        print(f"Files found. Reformatting...")
-        # Run reformatting
-        reformat_init(init_path, output_init)
-        reformat_soln(soln_path, output_soln)
-        reformat_test(test_path, output_test)
-        print(f"Reformatting complete.")
-    else:
-        print(f"Files not found in {problem_directory}. Skipping...")
+def process_directory(base_directory):
+    """Processes the entire directory structure containing multiple sections and questions."""
+    for root, dirs, files in os.walk(base_directory):
+        if 'init.js' in files and 'soln.js' in files and 'test.js' in files:
+            question_title = os.path.basename(root)
+            init_path = os.path.join(root, 'init.js')
+            soln_path = os.path.join(root, 'soln.js')
+            test_path = os.path.join(root, 'test.js')
+            output_file = os.path.join(root, 'output.json')
+            
+            # Convert to JSON
+            convert_to_json(init_path, soln_path, test_path, output_file, question_title)
 
 # Example usage
-sections_directory = "C:/Users/colto/Projects/Structy2/sections"  # Update with absolute path if needed
-
-for root, dirs, files in os.walk(sections_directory):
-    if 'init.js' in files and 'soln.js' in files and 'test.js' in files:
-        reformat_files(root)
-    else:
-        print(f"No valid files in {root}. Skipping...")
-
-print("Reformatter script completed.")
+base_directory = r'C:\Users\colto\Projects\Structy2\sections'  # Root directory of your sections
+process_directory(base_directory)

@@ -4,36 +4,35 @@
 // of islands on the grid. An island is a vertically or horizontally connected
 // region of land.
 
-// const grid = [
-//   ['W', 'L', 'W', 'W', 'W'],
-//   ['W', 'L', 'W', 'W', 'W'],
-//   ['W', 'W', 'W', 'L', 'W'],
-//   ['W', 'W', 'L', 'L', 'W'],
-//   ['L', 'W', 'W', 'L', 'L'],
-//   ['L', 'L', 'W', 'W', 'W'],
-// ];
+const grid1 = [
+    ['W', 'L', 'W', 'W', 'W'],
+    ['W', 'L', 'W', 'W', 'W'],
+    ['W', 'W', 'W', 'L', 'W'],
+    ['W', 'W', 'L', 'L', 'W'],
+    ['L', 'W', 'W', 'L', 'L'],
+    ['L', 'L', 'W', 'W', 'W'],
+];
+islandCount(grid1); // -> 3
 
-// islandCount(grid); // -> 3
-// const grid = [
-//   ['L', 'W', 'W', 'L', 'W'],
-//   ['L', 'W', 'W', 'L', 'L'],
-//   ['W', 'L', 'W', 'L', 'W'],
-//   ['W', 'W', 'W', 'W', 'W'],
-//   ['W', 'W', 'L', 'L', 'L'],
-// ];
+const grid2 = [
+    ['L', 'W', 'W', 'L', 'W'],
+    ['L', 'W', 'W', 'L', 'L'],
+    ['W', 'L', 'W', 'L', 'W'],
+    ['W', 'W', 'W', 'W', 'W'],
+    ['W', 'W', 'L', 'L', 'L'],
+];
+islandCount(grid2); // -> 4
 
-// islandCount(grid); // -> 4
-// const grid = [
-//   ['L', 'L', 'L'],
-//   ['L', 'L', 'L'],
-//   ['L', 'L', 'L'],
-// ];
+const grid3 = [
+    ['L', 'L', 'L'],
+    ['L', 'L', 'L'],
+    ['L', 'L', 'L'],
+];
+islandCount(grid3); // -> 1
 
-// islandCount(grid); // -> 1
-//  const grid = [
-//   ['W', 'W'],
-//   ['W', 'W'],
-//   ['W', 'W'],
-// ];
-
-// islandCount(grid); // -> 0
+const grid4 = [
+    ['W', 'W'],
+    ['W', 'W'],
+    ['W', 'W'],
+];
+islandCount(grid4); // -> 0
